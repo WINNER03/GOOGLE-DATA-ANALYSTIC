@@ -11,14 +11,15 @@ An aviation-themed data analytics portfolio project exploring **which months, NY
 3. Inspect charts and insights directly in the notebook.
 4. Optionally download output PNG charts and CSV tables from the Colab **Files** sidebar.
 
-No local setup or manual dataset upload is required. Google Colab needs an internet connection to load the CSV.
+No local setup or manual dataset upload is required. Colab downloads this project's bundled data file from GitHub using HTTPS. If you previously opened an older notebook that failed with `HTTPError`, **reopen the Colab link** to load the updated notebook, or rerun its corrected data-loading cell.
 
 ## Dataset
 
 - Provider: [OpenIntro — Flights data](https://www.openintro.org/data/index.php?data=nycflights).
 - Original source: Wickham (2014), `nycflights13`.
 - Coverage: random sample of **32,735 departing flights from JFK, LGA, and EWR in 2013**.
-- CSV: https://www.openintro.org/data/csv/nycflights.csv
+- Project dataset: [`data/nycflights.csv`](./data/nycflights.csv) (the original OpenIntro sample mirrored from the [Rdatasets CSV archive](https://github.com/vincentarelbundock/Rdatasets/blob/master/csv/openintro/nycflights.csv)).
+- The bundled archive CSV includes a `rownames` index column, which the notebook drops on import.
 
 ## Key analytical questions
 
@@ -39,7 +40,8 @@ No local setup or manual dataset upload is required. Google Colab needs an inter
 
 ## Files
 
-- `nyc_flight_delay_analysis.ipynb` — self-contained runnable Colab notebook.
+- `nyc_flight_delay_analysis.ipynb` — runnable Colab notebook.
+- `data/nycflights.csv` — bundled 32,735-row source dataset to avoid third-party download failures.
 - `data_dictionary.md` — metric definitions and scope.
 - `requirements.txt` — Python libraries (mainly for local use).
 
