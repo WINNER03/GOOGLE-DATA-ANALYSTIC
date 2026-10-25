@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#08111f">
+  <meta name="description" content="Interactive web dashboard exploring flight arrival delays, routes and trends for 32,735 NYC flights in 2013.">
+  <title>FlightScope | NYC Flight Delay Analytics</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="data/flights.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#dashboard">Skip to dashboard</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="FlightScope homepage"><span class="brand-mark" aria-hidden="true">✈</span><span>FLIGHTSCOPE<small>Data intelligence</small></span></a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#dashboard">Overview</a><a href="#analysis">Analysis</a><a href="#methodology">Methodology</a>
+        <a class="btn" href="https://github.com/WINNER03/GOOGLE-DATA-ANALYSTIC/tree/main/docs" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      </nav>
+    </div>
+  </header>
+  <main id="top" class="container">
+    <section class="hero" aria-labelledby="hero-title">
+      <div>
+        <div class="eyebrow">Aviation Analytics / Historical dataset</div>
+        <h1 id="hero-title">Every delay <span>tells a story.</span></h1>
+        <p>Explore real departure and arrival data for flights leaving New York's three major airports in 2013. Discover patterns by month, carrier, airport, departure hour, and route.</p>
+        <div class="hero-links">
+          <a class="btn btn-primary" href="#dashboard">Explore dashboard ↓</a>
+          <a class="btn" href="https://colab.research.google.com/github/WINNER03/GOOGLE-DATA-ANALYSTIC/blob/main/projects/nyc-flight-delay-analysis/nyc_flight_delay_analysis.ipynb" target="_blank" rel="noopener noreferrer">Python notebook ↗</a>
+        </div>
+        <div class="status-line"><span class="pulse" aria-hidden="true"></span><span id="data-status" role="status" aria-live="polite">Loading local dataset…</span></div>
+      </div>
+      <div class="hero-orbit" aria-hidden="true">
+        <div class="orbit"></div><span class="orbit-dot one"></span><span class="orbit-dot two"></span>
+        <div class="orbit-text"><span class="orbit-big">32,735</span><span class="orbit-caption">Flights · NYC · 2013</span></div>
+      </div>
+    </section>
+    <section class="filter-panel" id="dashboard" aria-label="Data filters">
+      <div class="filter-top">
+        <div><strong>Customize your analysis</strong><span>Filters apply across every metric, chart, and row.</span></div>
+        <button class="btn" id="reset" type="button">↻ Reset filters</button>
+      </div>
+      <div class="filters">
+        <div class="field"><label for="airport">Origin airport</label><select id="airport"><option value="ALL">All airports</option></select></div>
+        <div class="field"><label for="month">Month</label><select id="month"><option value="ALL">All months</option></select></div>
+        <div class="field"><label for="carrier">Airline code</label><select id="carrier"><option value="ALL">All airlines</option></select></div>
+        <div class="field"><label for="route">Filter route</label><input id="route" type="search" placeholder="e.g. JFK-LAX" autocomplete="off" spellcheck="false"></div>
+        <button class="btn btn-primary" type="button" id="download">↓ Export CSV</button>
+      </div>
+    </section>
+    <section aria-labelledby="overview-title">
+      <div class="section-heading"><div><div class="section-label">01 / Overview</div><h2 id="overview-title">At a glance</h2></div><p id="showing">Based on the selected flight records</p></div>
+      <div class="kpis">
+        <article class="kpi"><div class="kpi-label">Selected flights</div><div class="kpi-value" id="metric-total">—</div><div class="kpi-caption">Records matching filters</div></article>
+        <article class="kpi"><div class="kpi-label">Late arrivals</div><div class="kpi-value kpi-accent" id="metric-late">—</div><div class="kpi-caption">Arrival delay &gt; 15 minutes</div></article>
+        <article class="kpi"><div class="kpi-label">Average arrival delay</div><div class="kpi-value kpi-sky" id="metric-mean">—</div><div class="kpi-caption">Minutes · negative means early</div></article>
+        <article class="kpi"><div class="kpi-label">Median arrival delay</div><div class="kpi-value kpi-warn" id="metric-median">—</div><div class="kpi-caption">Minutes · observed values only</div></article>
+      </div>
+    </section>
+    <section id="analysis" aria-labelledby="analysis-title">
+      <div class="section-heading"><div><div class="section-label">02 / Analytics</div><h2 id="analysis-title">Patterns behind the numbers</h2></div><p>Data visualizations update as filters change.</p></div>
+      <div class="chart-grid">
+        <article class="panel wide"><div class="panel-head"><div><h3>Late arrivals through the year</h3><p>Percentage of observed flights landing more than 15 minutes late, by month</p></div><span class="panel-tag">Monthly trend</span></div><div class="viz" id="chart-months"></div></article>
+        <article class="panel"><div class="panel-head"><div><h3>Departure airport comparison</h3><p>Late arrival rate, by NYC origin airport</p></div><span class="panel-tag">3 airports</span></div><div class="viz" id="chart-airports"></div></article>
+        <article class="panel"><div class="panel-head"><div><h3>Airline comparison</h3><p>Carriers with 100+ observed arrivals in the filtered subset</p></div><span class="panel-tag">Top 8 by volume</span></div><div class="viz" id="chart-carriers"></div></article>
+        <article class="panel"><div class="panel-head"><div><h3>By departure hour</h3><p>Late arrival rate by recorded departure hour</p></div><span class="panel-tag">Hourly pattern</span></div><div class="viz" id="chart-hours"></div></article>
+        <article class="panel"><div class="panel-head"><div><h3>Most frequent routes</h3><p>Routes ranked by sample flight volume</p></div><span class="panel-tag">Top 8 routes</span></div><div class="viz" id="chart-routes"></div></article>
+      </div>
+    </section>
+    <section class="results" aria-label="Insights and flight explorer">
+      <article class="panel"><div class="panel-head"><div><h3>Quick insights</h3><p>Generated from the current selection</p></div><span class="panel-tag">Live calculations</span></div><div class="insights" id="insights"></div></article>
+      <article class="panel"><div class="panel-head"><div><h3>Flight explorer</h3><p>Sample records matching selected filters</p></div><span class="panel-tag">First 10 rows</span></div><div class="table-wrap"><table class="flight-table"><thead><tr><th>Date</th><th>Route</th><th>Airline</th><th>Departure</th><th>Arrival</th></tr></thead><tbody id="flight-rows"></tbody></table></div><div class="panel-footer">Download CSV to inspect all matching records.</div></article>
+    </section>
+    <section class="method" id="methodology">
+      <div class="section-label">03 / About the data</div>
+      <h2>Methodology & limitations</h2>
+      <p><strong>Source:</strong> <a href="https://openintrostat.github.io/openintro/reference/nycflights.html" target="_blank" rel="noopener noreferrer">OpenIntro nycflights</a>, a random sample of 32,735 flights from JFK, LGA and EWR in 2013; originally credited to H. Wickham, <em>nycflights13</em> (2014). The website stores the dataset locally with its source attribution. Flight values are not live.</p>
+      <p><strong>Late arrival:</strong> strictly more than 15 minutes after the scheduled arrival. Percentages exclude records missing an arrival delay. Missing delays are not automatically classified as cancellations.</p>
+      <p><strong>Interpretation:</strong> airline and airport rates are unadjusted for route mix, season, weather or other confounders. Historical associations are not proof of causation or measures of current airline performance.</p>
+      <small>Built with vanilla JavaScript, native SVG, HTML and CSS. No database, API key, account, or Python runtime required.</small>
+    </section>
+  </main>
+  <footer class="site-footer"><div class="container footer-inner"><span>© 2026 FlightScope · Aviation data analysis portfolio</span><span>Built with curiosity, data &amp; engineering ✈</span></div></footer>
+</body>
+</html>
