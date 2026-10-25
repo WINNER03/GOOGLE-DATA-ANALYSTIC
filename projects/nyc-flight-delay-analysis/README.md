@@ -2,6 +2,10 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/WINNER03/GOOGLE-DATA-ANALYSTIC/blob/main/projects/nyc-flight-delay-analysis/nyc_flight_delay_analysis.ipynb)
 
+## Web dashboard
+
+Explore the interactive **[FlightScope website](https://winner03.github.io/GOOGLE-DATA-ANALYSTIC/)** after [GitHub Pages is enabled](../../docs/README.md#demo-github-pages). The complete HTML/CSS/JavaScript implementation lives in [`docs/`](../../docs/).
+
 An aviation-themed data analytics portfolio project exploring **which months, NYC departure airports, airlines, hours, and routes had higher late-arrival rates**.
 
 ## Run it
