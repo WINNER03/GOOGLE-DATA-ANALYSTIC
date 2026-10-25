@@ -1,0 +1,4 @@
+# FlightScope: deploy static dashboard from the docs directory.
+# No build command or framework is needed.
+[build]
+  publish = "docs"
